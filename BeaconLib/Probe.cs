@@ -30,9 +30,12 @@ namespace BeaconLib
         private IEnumerable<BeaconLocation> currentBeacons = Enumerable.Empty<BeaconLocation>();
 
         private bool running = true;
+	    private int _discoveryPort;
 
-        public Probe(string beaconType)
+        public Probe(string beaconType, int discoveryPort = Beacon.DiscoveryPort)
         {
+	        _discoveryPort = discoveryPort;
+
 	        foreach (var networkInterface in NetworkInterface.GetAllNetworkInterfaces())
 	        {
 		        if(networkInterface.OperationalStatus != OperationalStatus.Up || networkInterface.SupportsMulticast == false)
@@ -131,7 +134,7 @@ namespace BeaconLib
 
 	        foreach (var udp in _clients)
 	        {
-		        udp.Send(probe, probe.Length, new IPEndPoint(IPAddress.Broadcast, Beacon.DiscoveryPort));
+		        udp.Send(probe, probe.Length, new IPEndPoint(IPAddress.Broadcast, _discoveryPort));
 			}
 		}
 

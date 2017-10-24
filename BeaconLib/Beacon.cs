@@ -19,7 +19,7 @@ namespace BeaconLib
         internal const int DiscoveryPort = 35891;
         private readonly UdpClient udp;
  
-        public Beacon(string beaconType, ushort advertisedPort)
+        public Beacon(string beaconType, ushort advertisedPort, int discoveryPort = DiscoveryPort)
         {
             BeaconType     = beaconType;
             AdvertisedPort = advertisedPort;
@@ -27,7 +27,7 @@ namespace BeaconLib
 
             udp = new UdpClient();
             udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            udp.Client.Bind(new IPEndPoint(IPAddress.Any, DiscoveryPort));
+            udp.Client.Bind(new IPEndPoint(IPAddress.Any, discoveryPort));
 
             try 
             {
